@@ -1,0 +1,28 @@
+{
+  "name": "adaptive-interview-engine",
+  "version": "1.0.0",
+  "description": "AI-powered adaptive interview platform with Groq LLM evaluation and dynamic difficulty scaling.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js"
+  },
+  "keywords": [
+    "interview",
+    "adaptive",
+    "groq",
+    "ai",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "groq-sdk": "^0.9.1",
+    "mongoose": "^8.9.5"
+  }
+}
