@@ -67,18 +67,37 @@ app.use((err, _req, res, _next) => {
 // ─────────────────────────────────────────────
 // MongoDB Connection + Server Start
 // ─────────────────────────────────────────────
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log("✅  Connected to MongoDB");
-    app.listen(PORT, () => {
-      console.log(`🚀  Server running on http://localhost:${PORT}`);
-      console.log(`📡  Interview API mounted at /api/interview`);
-    });
-  })
-  .catch((err) => {
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+  await mongoose.connect(MONGO_URI);
+  console.log("✅  Connected to MongoDB");
+};
+
+// Middleware to ensure DB connection on serverless requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
     console.error("❌  MongoDB connection failed:", err.message);
-    process.exit(1);
-  });
+    res.status(500).json({ success: false, message: "Database connection failed." });
+  }
+});
+
+// Run server only if running locally (not in serverless environment)
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`🚀  Server running on http://localhost:${PORT}`);
+        console.log(`📡  Interview API mounted at /api/interview`);
+      });
+    })
+    .catch((err) => {
+      console.error("❌  MongoDB connection failed:", err.message);
+      process.exit(1);
+    });
+}
 
 module.exports = app; // Export for testing
+

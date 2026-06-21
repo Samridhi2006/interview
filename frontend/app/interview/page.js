@@ -98,7 +98,7 @@ const DiffArrow = ({ from, to }) => {
 function AdaptiveInterview({
   candidateId = "anonymous",
   totalQs = 10,
-  apiBase = "http://localhost:5000/api/interview",
+  apiBase = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:5000/api/interview",
 }) {
   // ── State ──────────────────────────────────
   const [view, setView] = useState("init"); // "init" | "loading" | "question" | "evaluating" | "report"
