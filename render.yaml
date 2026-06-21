@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: adaptive-interview-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+        description: "Your MongoDB Atlas connection string"
+      - key: GROQ_API_KEY
+        sync: false
+        description: "Your Groq API key (llama-3.3-70b-versatile)"
+      - key: PORT
+        value: "5000"
